@@ -1,0 +1,54 @@
+import queasycam.*;
+Terrain t;
+ArrayList <Integer> gradient;
+
+void setup(){
+  size(1024,720,P3D);
+  t = new Terrain(width, height, 0, 300);
+    gradient("gradient1.jpg");
+
+}
+
+void draw(){
+  int index;
+  int [][] terrain = new int[width][height];
+  for (int x = 0; x < width; x++) {
+	for (int y = 0; y < height; y++) {
+	  index = x + (y*width);
+	  terrain[x][y] = t.map[index];
+	}
+  }
+  int scl = 30;
+
+  background(0);
+  stroke(0);
+  //noStroke();
+  int cIndex;
+  color c = color(0);
+  translate(width/2, height/2+50);
+  rotateX(PI/3);
+  //rotateY(PI/map(mouseX,0, width,0,6));
+  translate(-width/2, -height/2);
+  for (int y = 0; y < width-1; y++) {
+    beginShape(TRIANGLE_STRIP);
+    for (int x = 0; x < height; x++) {
+      vertex(x*scl, y*scl, terrain[x][y]);
+      vertex(x*scl, (y+1)*scl, terrain[x][y+1]);
+      cIndex = int(map(terrain[x][y+1], min(terrain[x]), max(terrain[x]), 0, gradient.size()-1));
+      c = gradient.get(cIndex);
+      //rect(x*scl, y*scl, scl, scl);
+      fill(c);
+    }
+    endShape();
+    
+  }
+}
+
+void gradient(String string){
+  gradient = new ArrayList<Integer>();
+  PImage im;
+  im = loadImage("C:\\Users\\luanl\\Pictures\\PDI\\Gradient\\"+string);
+  im.loadPixels();
+  for(int i=1; i<im.width; i++)
+  gradient.add(color(im.pixels[i]));
+}

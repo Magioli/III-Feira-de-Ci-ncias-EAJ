@@ -1,0 +1,80 @@
+class Terrain{
+  int[]  map;
+  PImage texture;
+  PShape ground;
+  float  Xsize;
+  float  Zsize;
+  float  Ymin;
+  float  Ymax;
+  ArrayList <Integer> gradient;
+
+  Terrain(float Xsize, float Zsize, float Ymin, float Ymax){
+  	this.Zsize = Zsize;
+  	this.Xsize = Xsize;
+  	this.Ymin  = Ymin;
+  	this.Ymax  = Ymax;
+  	mapGenerator();
+  	textureGenerator();
+  	groundGenerator();
+  }
+
+  Terrain(float Xsize, float Zsize, float Ymin, float Ymax, int[] map){
+  	this.Zsize = Zsize;
+  	this.Xsize = Xsize;
+  	this.Ymin  = Ymin;
+  	this.Ymax  = Ymax;
+  	this.map   = map;
+  	textureGenerator();
+  	groundGenerator();
+  }
+
+  Terrain(float Xsize, float Zsize, float Ymin, float Ymax, int[] map, PImage texture){
+  	this.Zsize   = Zsize;
+  	this.Xsize   = Xsize;
+  	this.Ymin    = Ymin;
+  	this.Ymax    = Ymax;
+  	this.map     = map;
+  	this.texture = texture;
+  	groundGenerator();
+  }
+
+  void mapGenerator(){
+  	map = new int[int(Xsize + (Zsize*Xsize))];
+  	float xoff = 0;
+  	float yoff = 0;
+  	int index;
+	for (int x = 0; x < Xsize; x++) {
+		yoff = 0;
+		for (int y = 0; y < Zsize; y++) {
+			index = int(x + (y*Xsize));
+			map[index] = int(map(noise(xoff, yoff), 0, 1, 0, 2047));
+			yoff += 0.03;
+		}
+		xoff += 0.03;
+	}
+  }
+
+  void textureGenerator(){
+  	gradient("gradient1.jpg");
+  	float rows = max(t.map);
+  	float cols = min(t.map);
+  	int index;
+  	texture = ;
+  	for (int x = 0; x < Xsize; x+=10) {
+		for (int y = 0; y < Zsize; y+=10) {
+			index = int(x + (y*Xsize));
+			color c = gradient.get(int(map(this.map[index], cols, rows, 0, gradient.size())));
+			texture.pixels[index] = c;
+		}
+	}
+  }
+
+  void groundGenerator(){
+
+  }
+
+  void show(){
+  	  background(0);
+  	  shape(ground, 0, height/2);
+  }
+}

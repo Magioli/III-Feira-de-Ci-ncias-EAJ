@@ -1,0 +1,33 @@
+import queasycam.*;
+Terrain t;
+ArrayList <Integer> gradient;
+
+void setup(){
+  size(1024,720,P3D);
+  t = new Terrain(width, height, 0, 300);
+  gradient("gradient1.jpg");
+}
+
+void draw(){
+  background(0);
+  stroke(0);
+  //noStroke();
+  int index;
+  	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			index = int(x + (y*width));
+			
+			color c = gradient.get(int(map(t.map[index], 0, 2047, 0, 255)));
+			fill(int(map(t.map[index], 0, 2047, 0, 255)));
+		}
+	}
+}
+
+void gradient(String string){
+  gradient = new ArrayList<Integer>();
+  PImage im;
+  im = loadImage("C:\\Users\\luanl\\Pictures\\PDI\\Gradient\\"+string);
+  im.loadPixels();
+  for(int i=1; i<im.width; i++)
+  gradient.add(color(im.pixels[i]));
+}
